@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.EkranQoriqchisi" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/asosiy</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:statusBarColor">@color/fon</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/fon</item>
+    </style>
+
+    <style name="Yorliq">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/kulrang</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>

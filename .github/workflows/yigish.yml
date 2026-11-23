@@ -50,3 +50,40 @@ jobs:
         with:
           name: EkranQoriqchisi-windows
           path: kompyuter/dist/EkranQoriqchisi.exe
+
+  chiqarish:
+    name: Tayyor fayllarni chiqarish
+    needs: [android, windows]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: fayllar
+      - name: Fayllarni tayyorlash
+        run: |
+          mkdir -p tayyor
+          cp fayllar/EkranQoriqchisi-android/app-debug.apk tayyor/EkranQoriqchisi.apk
+          cp fayllar/EkranQoriqchisi-windows/EkranQoriqchisi.exe tayyor/EkranQoriqchisi.exe
+          ls -la tayyor
+      - name: Release (yuklab olish sahifasi)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Ekran qo'riqchisi v1.0.${{ github.run_number }}
+          body: |
+            📱 **EkranQoriqchisi.apk** — Android telefon uchun
+            💻 **EkranQoriqchisi.exe** — Windows kompyuter uchun
+          files: |
+            tayyor/EkranQoriqchisi.apk
+            tayyor/EkranQoriqchisi.exe
+      - name: tayyor-fayllar branchiga yozish
+        run: |
+          cd tayyor
+          git init -q -b tayyor-fayllar
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "Tayyor fayllar (${GITHUB_SHA::7})"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" tayyor-fayllar
